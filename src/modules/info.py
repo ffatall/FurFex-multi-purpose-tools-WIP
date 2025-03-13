@@ -1,3 +1,6 @@
+# By transcrime
+# GPL-3.0 license
+
 import platform
 import psutil
 import socket
