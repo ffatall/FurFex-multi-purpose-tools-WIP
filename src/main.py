@@ -1,38 +1,40 @@
-import cmd
-import os
-import runpy
-import inquirer
-class MyCLI(cmd.Cmd):
-    intro = 'Welcome to Fuefex. Type help or ? to list commands. '
-    print("| __|  _ _ _ / _|_____ __  ___  | __|_ _| |_ __ _| |")
-    print("| _| || | '_|  _/ -_) \ / |___| | _/ _` |  _/ _` | |")
-    print("|_| \_,_|_| |_| \___/_\_\       |_|\__,_|\__\__,_|_|")
-    prompt = '(Furfex...) '
+# By transcrime
+# GPL-3.0 license
 
-    def do_modules(self, target):
-      #Options = ("{options1}{{1}}, {options1}")
-      #run = input("What Modules do you want to run",)
-      response = ''
-      while response not in {"yes", "no"}:
-         print("Oki :3 Will shart running")
-         response = input().lower()
-      return response == "yes" ==runpy.run_module("modules hash.py") or  "no" ==print("n")
-           
+print("  █████▒█    ██  ██▀███    █████▒▓█████ ▒██   ██▒")
+print("▓██   ▒ ██  ▓██▒▓██ ▒ ██▒▓██   ▒ ▓█   ▀ ▒▒ █ █ ▒░")
+print("▒████ ░▓██  ▒██░▓██ ░▄█ ▒▒████ ░ ▒███   ░░  █   ░")
+print("░▓█▒  ░▓▓█  ░██░▒██▀▀█▄  ░▓█▒  ░ ▒▓█  ▄  ░ █ █ ▒ ")
+print("░▒█░   ▒▒█████▓ ░██▓ ▒██▒░▒█░    ░▒████▒▒██▒ ▒██▒")
+print(" ▒ ░   ░▒▓▒ ▒ ▒ ░ ▒▓ ░▒▓░ ▒ ░    ░░ ▒░ ░▒▒ ░ ░▓ ░")
+print(" ░     ░░▒░ ░ ░   ░▒ ░ ▒░ ░       ░ ░  ░░░   ░▒ ░")
+print(" ░ ░    ░░░ ░ ░   ░░   ░  ░ ░       ░    ░    ░  ")
+print("          ░        ░                ░  ░ ░    ░  ")
+print("Welcome to Fuefex.")
+print("1.DDoS")
+print("2.Hasher - MD5")
+print("3.info")
+print("4.Exit")
+Select = input("-->")
+
+if Select == "1":
+ print("Staring DDoS Modules")
+ exec(open("./modules.py").read()) # The reason why we are not using runpy because it was causing errors -- ImportError -- ModuleNotFoundError -- AttributeError
+ 
+elif Select == "2":
+ print("Staring Hasher Modules")
+ exec(open("./modules hash.py").read())
 
 
-    
-        
-    #print("2")
-    #print("Oki :3 Will shart running")  
-     
-    
-    def do_info(self, line):
-      print("Furfex{1}")
-      runpy.run_module("info")
+elif Select == "3":
+ print("Staring info Modules")
+ exec(open("./info.py").read())
 
-    def do_exit(self, line):
-        print("Exiting...")
-        return True
-print
-if __name__ == '__main__':
-    MyCLI().cmdloop()
+
+elif Select == "4":
+ print("Exit")
+ exit()
+
+elif Select == "":
+ print("Bye bye")
+ exit()
